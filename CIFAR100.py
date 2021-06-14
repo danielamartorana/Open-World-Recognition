@@ -59,22 +59,7 @@ class DatasetCifar100(VisionDataset):
 
         self.dict_class_label = {c:i for i, c in enumerate(self.classes)} 
         #Otteniamo un dizionario {classe: indice} = {56:0}, {99,1},..
-        #Le classi in classes sono disordinate,
-        #label è l'indice con cui arriva quella classe e sarà l'indice(neurone di output) della predizione(la rete mi dice che quella classe sta a 0 e non che è 56,
-        #quindi devo fare mappping!!!)
-
-      
-        #if split=="train":
-        #    self.dataset.targets = [self.dict_class_label[target] for target in self.dataset.targets] #mappo i target che arrivano in base all'ordine delle classi scelto
-         #   self.CLASSES = self.dataset.classes #insieme delle classi (100) a parole
-          #  self.dataset.class_to_idx = {self.CLASSES[i]:cl for i,cl in enumerate(self.classes)}
-       # else:
-        #    self.dataset.targets = [self.dict_class_label[target] for target in self.dataset.targets] 
-         #   self.CLASSES = self.dataset.classes #insieme delle classi (100) a parole
-          #  self.dataset.class_to_idx = {self.CLASSES[i]:cl for i,cl in enumerate(self.classes)}
-            #Mapping classe-numero classe nell'ordine di arrivo es. apple (classe 0): 33
            
-    
     #def __getitem__(self, index):
     #    return self.dataset[index][0], self.dataset[index][1]
 
@@ -94,8 +79,6 @@ class DatasetCifar100(VisionDataset):
     def get_indexes_from_labels(self, labels):
         targets = self.dataset.targets #sono tutte le etichette dei dati in arrivo già mappate secondo l'ordine casuale delle classi scelto 
         indexes = []
-        #print(len(targets))
-        #print(labels)
         for i,target in enumerate(targets):
           if target in labels:
               indexes.append(i)
