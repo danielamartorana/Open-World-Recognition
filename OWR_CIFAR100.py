@@ -83,23 +83,6 @@ class DatasetCifar100(VisionDataset):
     #def __getitem__(self, index):
     #    return self.dataset[index][0], self.dataset[index][1]
 
-    def closedWorld(self, closed=True):
-      if (closed):
-        closedIndexes = self.get_indexes_from_labels(self.classOne)
-        newDataset = Subset(self.dataset, closedIndexes)
-        self.classes=self.classOne
-        self.dict_class_label = {c:i for i, c in enumerate(self.classes)} 
-      else: 
-        openIndexes = self.get_indexes_from_labels(self.classTwo)
-        newDataset = Subset(self.dataset, openIndexes)
-        self.classes = self.classTwo
-        self.dict_class_label = {c:i for i, c in enumerate(self.classes)} 
-      
-      self.dataset = newDataset
-      return self
-
-
-
     def __getitem__(self, index):
         return index, self.dataset[index][0], self.dataset[index][1]
 
