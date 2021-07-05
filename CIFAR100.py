@@ -59,9 +59,10 @@ class DatasetCifar100(VisionDataset):
 
         self.dict_class_label = {c:i for i, c in enumerate(self.classes)} 
         #Otteniamo un dizionario {classe: indice} = {56:0}, {99,1},..
-           
-    #def __getitem__(self, index):
-    #    return self.dataset[index][0], self.dataset[index][1]
+        
+        self.closedWClasses = self.classes[0:50]
+        self.openWClasses = self.classes[50:100]
+
 
     def __getitem__(self, index):
         return index, self.dataset[index][0], self.dataset[index][1]
