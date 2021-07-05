@@ -87,9 +87,13 @@ class DatasetCifar100(VisionDataset):
       if (closed):
         closedIndexes = self.get_indexes_from_labels(self.classOne)
         newDataset = Subset(self.dataset, closedIndexes)
+        self.classes=self.classOne
+        self.dict_class_label = {c:i for i, c in enumerate(self.classes)} 
       else: 
         openIndexes = self.get_indexes_from_labels(self.classTwo)
         newDataset = Subset(self.dataset, openIndexes)
+        self.classes = self.classTwo
+        self.dict_class_label = {c:i for i, c in enumerate(self.classes)} 
       
       self.dataset = newDataset
       return self
