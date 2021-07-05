@@ -83,7 +83,7 @@ class DatasetCifar100(VisionDataset):
     #def __getitem__(self, index):
     #    return self.dataset[index][0], self.dataset[index][1]
 
-    def closedWorld(closed=True):
+    def closedWorld(self, closed=True):
       dataset = []
       for idx in self.dataset:
         if (closed):
