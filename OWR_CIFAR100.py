@@ -85,7 +85,7 @@ class DatasetCifar100(VisionDataset):
 
     def closedWorld(self, closed=True):
       dataset = []
-      for idx in self.dataset:
+      for idx, _ in enumerate(self.dataset):
         if (closed):
             if (self.dataset[idx][1] in self.classOne):
                dataset.append(self.dataset[idx])
