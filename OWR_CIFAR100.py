@@ -85,10 +85,10 @@ class DatasetCifar100(VisionDataset):
 
     def closedWorld(self, closed=True):
       if (closed):
-        closedIndexes = self.dataset.get_indexes_from_labels(self.classOne)
+        closedIndexes = self.get_indexes_from_labels(self.classOne)
         newDataset = Subset(self.dataset, closedIndexes)
       else: 
-        openIndexes = self.dataset.get_indexes_from_labels(self.classTwo)
+        openIndexes = self.get_indexes_from_labels(self.classTwo)
         newDataset = Subset(self.dataset, openIndexes)
       
       self.dataset = newDataset
