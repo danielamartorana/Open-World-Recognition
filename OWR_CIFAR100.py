@@ -84,16 +84,14 @@ class DatasetCifar100(VisionDataset):
     #    return self.dataset[index][0], self.dataset[index][1]
 
     def closedWorld(self, closed=True):
-      dataset = []
-      for idx, _ in enumerate(self.dataset):
-        if (closed):
-            if (self.dataset[idx][1] in self.classOne):
-               dataset.append(self.dataset[idx])
-        else: 
-            if (self.dataset[idx][1] in self.classTwo):
-               dataset.append(self.dataset[idx])
+      if (closed):
+        closedIndexes = self.dataset.get_indexes_from_labels(self.classOne)
+        newDataset = Subset(self.dataset, closedIndexes)
+      else: 
+        openIndexes = self.dataset.get_indexes_from_labels(self.classTwo)
+        newDataset = Subset(self.dataset, openIndexes)
       
-      self.dataset = dataset
+      self.dataset = newDataset
       return self
 
 
