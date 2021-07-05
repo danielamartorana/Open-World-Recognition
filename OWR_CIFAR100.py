@@ -10,13 +10,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 NUM_CLASSES = 100
-BATCH_SIZE=128
+BATCH_SIZE = 128
 DATA_DIR = './CIFAR_100'  
 N_GROUPS_FOR_TRAINING = 10   # Numero di gruppi di classi da usare in fase di training (1: usa solo il primo gruppo, 10: usa tutti i gruppi di classi)
 
 
 class DatasetCifar100(VisionDataset):
-    def __init__(self, split, rand_seed=None):
+    def __init__(self, split, closedWorld = True, rand_seed=None):
         super(DatasetCifar100, self).__init__(root=0)
 
         means, stds = (0.5071, 0.4865, 0.4409), (0.2673, 0.2564, 0.2762)              # Normalizes tensor with mean and standard deviation of CIFAR 100
@@ -58,6 +58,11 @@ class DatasetCifar100(VisionDataset):
             self.dataset = torchvision.datasets.CIFAR100(DATA_DIR, train=False, download=True, transform=self.transform) # cosa cambia qui? train:true/false
 
         self.dict_class_label = {c:i for i, c in enumerate(self.classes)} 
+
+        self.classOne = self.classes[0:50]
+        self.classTwo = self.classes[50:100]
+
+        
         #Otteniamo un dizionario {classe: indice} = {56:0}, {99,1},..
         #Le classi in classes sono disordinate,
         #label è l'indice con cui arriva quella classe e sarà l'indice(neurone di output) della predizione(la rete mi dice che quella classe sta a 0 e non che è 56,
@@ -77,6 +82,21 @@ class DatasetCifar100(VisionDataset):
     
     #def __getitem__(self, index):
     #    return self.dataset[index][0], self.dataset[index][1]
+
+    def closedWorld(closed=True):
+      dataset = []
+      for idx in self.dataset:
+        if (closed):
+            if (self.dataset[idx][1] in self.classOne):
+               dataset.append(self.dataset[idx])
+        else 
+            if (self.dataset[idx][1] in self.classTwo):
+               dataset.append(self.dataset[idx])
+      
+      self.dataset = dataset
+      return self
+
+
 
     def __getitem__(self, index):
         return index, self.dataset[index][0], self.dataset[index][1]
