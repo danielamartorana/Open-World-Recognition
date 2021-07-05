@@ -89,7 +89,7 @@ class DatasetCifar100(VisionDataset):
         if (closed):
             if (self.dataset[idx][1] in self.classOne):
                dataset.append(self.dataset[idx])
-        else 
+        else: 
             if (self.dataset[idx][1] in self.classTwo):
                dataset.append(self.dataset[idx])
       
