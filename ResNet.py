@@ -19,6 +19,9 @@ class BasicBlock(nn.Module):
         self.bn2 = nn.BatchNorm2d(planes)
         self.downsample = downsample
         self.stride = stride
+        
+        self.ca = ChannelAttention(planes)
+        self.sa = SpatialAttention()
 
     def forward(self, x):
         residual = x
@@ -30,6 +33,10 @@ class BasicBlock(nn.Module):
         out = self.conv2(out)
         out = self.bn2(out)
 
+        out = self.ca(out) * out
+        out = self.sa(out) * out
+        
+        
         if self.downsample is not None:
             residual = self.downsample(x)
 
@@ -100,8 +107,43 @@ class ResNet(nn.Module):
         return x
 
 
-
 def resnet32(pretrained=False, **kwargs):
     n = 5
     model = ResNet(BasicBlock, [n, n, n], **kwargs)
     return model
+
+
+class ChannelAttention(nn.Module):
+    def _init_(self, in_planes, ratio=16):
+        super(ChannelAttention, self)._init_()
+        self.avg_pool = nn.AdaptiveAvgPool2d(1)
+        self.max_pool = nn.AdaptiveMaxPool2d(1)
+        self.sequential = nn.Sequential(
+                   
+        Flatten(),
+        nn.Linear(in_planes, in_planes // 16, bias=False),
+        nn.ReLU(),
+        nn.Linear(in_planes // 16, in_planes,  bias=False),
+        )
+    def forward(self, x):
+        avg_out = self.sequential(self.avg_pool(x))
+        max_out = self.sequential(self.max_pool(x))
+        out = avg_out + max_out
+        return F.sigmoid( out ).unsqueeze(2).unsqueeze(3).expand_as(x)
+
+class SpatialAttention(nn.Module):
+    def _init_(self, kernel_size=7):
+        super(SpatialAttention, self)._init_()
+
+        assert kernel_size in (3, 7), 'kernel size must be 3 or 7'
+        padding = 3 if kernel_size == 7 else 1
+
+        self.conv1 = nn.Conv2d(2, 1, kernel_size, padding=padding, bias=False)
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self, x):
+        avg_out = torch.mean(x, dim=1, keepdim=True)
+        max_out, _ = torch.max(x, dim=1, keepdim=True)
+        x = torch.cat([avg_out, max_out], dim=1)
+        x = self.conv1(x)
+        return self.sigmoid(x)
