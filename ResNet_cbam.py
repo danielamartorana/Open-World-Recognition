@@ -108,8 +108,8 @@ class ResNet(nn.Module):
 
 
 def resnetCBAM (pretrained = False, **kwargs):
-    n=5
-    model = ResNet(BasicBlock, [n,n,n], **kwargs)
+    n=2
+    model = ResNet(BasicBlock, [n,n,n,n], **kwargs)
     return model
 
 
