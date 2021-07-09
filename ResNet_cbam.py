@@ -114,7 +114,7 @@ def resnetCBAM (pretrained = False, **kwargs):
 
 
 class ChannelAttention(nn.Module):
-    def _init_(self, in_planes, ratio=16):
+    def _init_(self, in_planes):
         super(ChannelAttention, self)._init_()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.max_pool = nn.AdaptiveMaxPool2d(1)
