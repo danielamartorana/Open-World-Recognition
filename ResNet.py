@@ -33,7 +33,7 @@ class BasicBlock(nn.Module):
         out = self.conv2(out)
         out = self.bn2(out)
 
-        if self.cbam:
+        #if self.cbam:
             #out = self.ca(out) * out
             #out = self.sa(out) * out
         
