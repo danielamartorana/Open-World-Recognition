@@ -68,7 +68,7 @@ class BasicBlock(nn.Module):
         self.downsample = downsample
         self.stride = stride
 
-    def forward(self, x):
+    def forward(self, x, features=False):
         residual = x
 
         out = self.conv1(x)
