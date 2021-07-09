@@ -34,8 +34,8 @@ class BasicBlock(nn.Module):
         out = self.bn2(out)
 
         if self.cbam:
-            out = self.ca(out) * out
-            out = self.sa(out) * out
+            #out = self.ca(out) * out
+            #out = self.sa(out) * out
         
         
         if self.downsample is not None:
