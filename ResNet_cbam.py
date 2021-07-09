@@ -10,7 +10,7 @@ def conv3x3(in_planes, out_planes, stride=1):
 class BasicBlock(nn.Module):
     expansion = 1
 
-    def __init__(self, inplanes, planes, stride=1, downsample=None, cbam=False):
+    def __init__(self, inplanes, planes, stride=1, downsample=None):
         super(BasicBlock, self).__init__()
         self.conv1 = conv3x3(inplanes, planes, stride)
         self.bn1 = nn.BatchNorm2d(planes)
@@ -33,9 +33,8 @@ class BasicBlock(nn.Module):
         out = self.conv2(out)
         out = self.bn2(out)
 
-        if self.cbam:
-            out = self.ca(out) * out
-            out = self.sa(out) * out
+        out = self.ca(out) * out
+        out = self.sa(out) * out
         
         
         if self.downsample is not None:
@@ -115,7 +114,7 @@ def resnet32(pretrained=False, **kwargs):
 
 def resnetCBAM (pretrained = False, **kwargs):
     n=5
-    model = ResNet(BasicBlock(cbam=True), [n,n,n], **kwargs)
+    model = ResNet(BasicBlock, [n,n,n], **kwargs)
     return model
 
 
