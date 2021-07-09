@@ -10,7 +10,7 @@ def conv3x3(in_planes, out_planes, stride=1):
 class BasicBlock(nn.Module):
     expansion = 1
 
-    def __init__(self, cbam=False, inplanes, planes, stride=1, downsample=None):
+    def __init__(self, inplanes, planes, stride=1, downsample=None, cbam=False):
         super(BasicBlock, self).__init__()
         self.conv1 = conv3x3(inplanes, planes, stride)
         self.bn1 = nn.BatchNorm2d(planes)
