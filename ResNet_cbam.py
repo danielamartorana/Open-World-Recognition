@@ -115,15 +115,16 @@ def resnetCBAM (pretrained = False, **kwargs):
 
 class ChannelAttention(nn.Module):
     def _init_(self, in_planes):
+        self.in_planes = in_planes
         super(ChannelAttention, self)._init_()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.max_pool = nn.AdaptiveMaxPool2d(1)
         self.sequential = nn.Sequential(
                    
         Flatten(),
-        nn.Linear(in_planes, in_planes // 16, bias=False),
+        nn.Linear(self.in_planes, self.in_planes // 16, bias=False),
         nn.ReLU(),
-        nn.Linear(in_planes // 16, in_planes,  bias=False),
+        nn.Linear(self.in_planes // 16, self.in_planes,  bias=False),
         )
     def forward(self, x):
         avg_out = self.sequential(self.avg_pool(x))
